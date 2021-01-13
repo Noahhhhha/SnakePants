@@ -1,7 +1,7 @@
 <footer class="p-3">
     <div class="container d-none d-md-block">
         <p>
-            更实用的Java语言开发的论坛&nbsp;|&nbsp;
+            更实用的编程开发的论坛&nbsp;|&nbsp;
             <a href="https://github.com/tomoya92/pybbs" target="_blank">开源地址</a>&nbsp;|&nbsp;
             <a href="https://tomoya92.github.io/pybbs/" target="_blank">文档地址</a>
             <span class="pull-right">
@@ -18,6 +18,6 @@
         </div>
     </div>
     <div class="container text-center d-md-none">
-        powered by SnakePants<!--<a href="https://github.com/tomoya92/pybbs" target="_blank">pybbs</a>-->
+        powered by SnakePants
     </div>
 </footer>

@@ -60,11 +60,10 @@ public class SettingsApiController extends BaseApiController {
         ApiAssert.notTrue(user.getActive(), "你的帐号当前已经是激活状态，不需要再发激活邮件了");
 
         //String title = "感谢注册%s，点击下面链接激活帐号"; // 这句中的%s在邮件标题里是http://47.95.196.117:8091
-        String title = "感谢注册IPTY编程人生，点击下面链接激活帐号";
+        String title = "感谢注册%s，点击下面链接激活帐号";
         String content = "如果不是你注册了%s，请忽略此邮件&nbsp;&nbsp;<a href='%s/active?email=%s&code=${code}'>点击激活</a>";
-        if (codeService.sendEmail(user.getId(), user.getEmail(), String.format(title, systemConfigService.selectAllConfig
-                ().get("base_url").toString()), String.format(content, systemConfigService.selectAllConfig().get("name")
-                .toString(), systemConfigService.selectAllConfig().get("base_url").toString(), user.getEmail()))) {
+        String name = systemConfigService.selectAllConfig().get("name").toString();
+        if (codeService.sendEmail(user.getId(), user.getEmail(), String.format(title, name), String.format(content, name, systemConfigService.selectAllConfig().get("base_url").toString(), user.getEmail()))) {
             return success();
         } else {
             return error("邮件发送失败，也可能是站长没有配置邮箱");
