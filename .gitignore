@@ -23,7 +23,6 @@ out/
 .classpath
 docs/_site
 indexes/
-data/
 .settings/
 logs/
 .vscode/
