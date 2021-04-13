@@ -7,31 +7,22 @@
             <strong>激活成功</strong>
         </div>
     </#if>
+<#--    <div class="input-group">-->
+<#--        <input class="form-control" type="search" name="keyword" placeholder="回车搜索" value="${keyword!}"-->
+<#--               required aria-label="Search">-->
+<#--        <div class="input-group-append">-->
+<#--            <button class="btn btn-outline-success" type="submit">${i18n.getMessage("search")}</button>-->
+<#--        </div>-->
+<#--    </div>-->
     <div class="row">
         <div class="col-md-9">
             <div class="card">
-                <div class="card-header">
-                    <ul class="nav nav-pills">
-                        <li class="nav-item"><a class="nav-link <#if tab=="all">active</#if>" href="/?tab=all">全部</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link <#if tab=="good">active</#if>" href="/?tab=good">精华</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link <#if tab=="hot">active</#if>" href="/?tab=hot">最热</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link <#if tab=="newest">active</#if>"
-                                                href="/?tab=newest">最新</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link <#if tab=="noanswer">active</#if>"
-                                                href="/?tab=noanswer">无人问津</a>
-                        </li>
-                    </ul>
-                </div>
+                <#include "category.ftl">
                 <div class="card-body">
-                    <@tag_topics pageNo=pageNo!1 tab=tab!"all">
+                    <@tag_topics pageNo=pageNo!1 tab=tab!"all" tag=tag!"all" keyword=keyword!"none">
                         <#include "components/topics.ftl"/>
                         <@topics page=page/>
-
-                        <#include "components/paginate.ftl"/>
+                        <#include "components/paginate.ftl"/> <#-- 分页器 -->
                         <@paginate currentPage=page.current totalPage=page.pages actionUrl="/" urlParas="&tab=${tab!}"/>
                     </@tag_topics>
                 </div>

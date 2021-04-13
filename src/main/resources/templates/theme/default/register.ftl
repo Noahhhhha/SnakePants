@@ -8,8 +8,8 @@
                 <div class="card-body">
                     <form action="" onsubmit="return;" id="form">
                         <div class="form-group">
-                            <label for="username">用户名</label>
-                            <input type="text" id="username" name="username" class="form-control" placeholder="用户名"/>
+                            <label for="username">账号</label>
+                            <input type="text" id="username" name="username" class="form-control" placeholder="同用户名"/>
                         </div>
                         <div class="form-group">
                             <label for="password">密码</label>

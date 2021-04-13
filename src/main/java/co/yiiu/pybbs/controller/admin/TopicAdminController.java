@@ -5,6 +5,7 @@ import co.yiiu.pybbs.model.Topic;
 import co.yiiu.pybbs.service.IIndexedService;
 import co.yiiu.pybbs.service.ITagService;
 import co.yiiu.pybbs.service.ITopicService;
+import co.yiiu.pybbs.service.IUserTopicCostService;
 import co.yiiu.pybbs.util.MyPage;
 import co.yiiu.pybbs.util.Result;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -35,6 +36,7 @@ public class TopicAdminController extends BaseAdminController {
     @Autowired
     private IIndexedService indexedService;
 
+
     @RequiresPermissions("topic:list")
     @GetMapping("/list")
     public String list(@RequestParam(defaultValue = "1") Integer pageNo, String startDate, String endDate, String
@@ -42,7 +44,7 @@ public class TopicAdminController extends BaseAdminController {
         if (StringUtils.isEmpty(startDate)) startDate = null;
         if (StringUtils.isEmpty(endDate)) endDate = null;
         if (StringUtils.isEmpty(username)) username = null;
-        MyPage<Map<String, Object>> page = topicService.selectAllForAdmin(pageNo, startDate, endDate, username);
+        MyPage<Map<String, Object>> page = topicService.selectAllForAdmin(pageNo, startDate, endDate, username,getAdminUser());
         model.addAttribute("page", page);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);

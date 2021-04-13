@@ -26,8 +26,9 @@ public class TopicListDirective implements TemplateDirectiveModel {
                         TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
         Integer pageNo = Integer.parseInt(map.get("pageNo").toString());
         String tab = map.get("tab").toString();
-        MyPage<Map<String, Object>> page = topicService.selectAll(pageNo, tab);
+        String tag = map.get("tag").toString();
 
+        MyPage<Map<String, Object>> page = topicService.selectAllBySomething(pageNo, tab, tag);
         DefaultObjectWrapperBuilder builder = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_28);
         environment.setVariable("page", builder.build().wrap(page));
         templateDirectiveBody.render(environment.getOut());

@@ -176,7 +176,7 @@ public class IndexApiController extends BaseApiController {
         return success(tagService.selectAll(pageNo, null, null));
     }
 
-    // 上传图片
+    // 上传文件
     @PostMapping("/upload")
     @ResponseBody
     public Result upload(@RequestParam("file") MultipartFile[] files, String type, HttpSession session) {
@@ -189,10 +189,13 @@ public class IndexApiController extends BaseApiController {
         for (int i = 0; i < files.length; i++) {
             MultipartFile file = files[i];
             String suffix = "." + file.getContentType().split("/")[1];
-            if (!Arrays.asList(".jpg", ".png", ".gif", ".jpeg", ".mp4").contains(suffix.toLowerCase())) {
+
+            if (!Arrays.asList(".docx",".jpg", ".png", ".gif", ".jpeg", ".mp4", ".pdf", ".rar", ".word", ".zip", ".doc")
+                    .contains(suffix.toLowerCase())) { //
                 errors.add("第[" + (i + 1) + "]个文件异常: " + "文件格式不正确");
                 continue;
             }
+
             long size = file.getSize();
             // 根据不同上传类型，对文件大小做校验
             if (type.equalsIgnoreCase("video")) {
@@ -225,6 +228,8 @@ public class IndexApiController extends BaseApiController {
                 url = fileUtil.upload(file, null, "topic/" + user.getUsername());
             } else if (type.equalsIgnoreCase("video")) { // 视频上传
                 url = fileUtil.upload(file, null, "video/" + user.getUsername());
+            } else if (type.equalsIgnoreCase("file")){ // 文件上传
+                url = fileUtil.upload(file, null, "file/" + user.getUsername());
             } else {
                 errors.add("第[" + (i + 1) + "]个文件异常: " + "上传图片类型不在处理范围内");
                 continue;

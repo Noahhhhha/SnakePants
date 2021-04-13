@@ -1,5 +1,6 @@
 package co.yiiu.pybbs.controller.admin;
 
+import co.yiiu.pybbs.model.AdminUser;
 import co.yiiu.pybbs.model.Comment;
 import co.yiiu.pybbs.model.Topic;
 import co.yiiu.pybbs.service.ICommentService;
@@ -36,7 +37,8 @@ public class CommentAdminController extends BaseAdminController {
         if (StringUtils.isEmpty(startDate)) startDate = null;
         if (StringUtils.isEmpty(endDate)) endDate = null;
         if (StringUtils.isEmpty(username)) username = null;
-        MyPage<Map<String, Object>> page = commentService.selectAllForAdmin(pageNo, startDate, endDate, username);
+        AdminUser adminUser = getAdminUser();
+        MyPage<Map<String, Object>> page = commentService.selectAllForAdmin(pageNo, startDate, endDate, username, adminUser.getId(),adminUser.getRoleId());
         model.addAttribute("page", page);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);

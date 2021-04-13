@@ -218,10 +218,10 @@ public class CommentService implements ICommentService {
 
     @Override
     public MyPage<Map<String, Object>> selectAllForAdmin(Integer pageNo, String startDate, String endDate, String
-            username) {
+            username ,Integer adminUserId, Integer roleId) {
         MyPage<Map<String, Object>> iPage = new MyPage<>(pageNo, Integer.parseInt((String) systemConfigService
                 .selectAllConfig().get("page_size")));
-        return commentMapper.selectAllForAdmin(iPage, startDate, endDate, username);
+        return commentMapper.selectAllForAdmin(iPage, startDate, endDate, username, adminUserId, roleId);
     }
 
     // 查询今天新增的话题数

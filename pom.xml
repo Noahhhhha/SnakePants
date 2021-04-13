@@ -8,8 +8,8 @@
     <version>5.2.1</version>
     <packaging>jar</packaging>
 
-    <name>pybbs</name>
-    <description>更实用的Java语言开发的论坛</description>
+    <name>SnakePants</name>
+    <description>更实用的编程语言开发的论坛</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -178,6 +178,13 @@
         </dependency>
         <!-- import excel poi end -->
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.18</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -195,7 +202,7 @@
 
     <build>
 
-        <finalName>pybbs</finalName>
+        <finalName>SnakePants</finalName>
 
         <resources>
             <resource>

@@ -1,26 +1,28 @@
 package co.yiiu.pybbs.controller.front;
 
+import co.yiiu.pybbs.exception.ApiException;
 import co.yiiu.pybbs.model.Collect;
 import co.yiiu.pybbs.model.Tag;
 import co.yiiu.pybbs.model.Topic;
 import co.yiiu.pybbs.model.User;
-import co.yiiu.pybbs.service.ICollectService;
-import co.yiiu.pybbs.service.ITagService;
-import co.yiiu.pybbs.service.ITopicService;
-import co.yiiu.pybbs.service.IUserService;
+import co.yiiu.pybbs.service.*;
 import co.yiiu.pybbs.util.IpUtil;
 import co.yiiu.pybbs.util.MyPage;
+import co.yiiu.pybbs.util.Result;
+import com.alibaba.fastjson.JSONObject;
+import com.xkcoding.http.util.StringUtil;
+import io.undertow.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,28 +44,30 @@ public class TopicController extends BaseController {
     private IUserService userService;
     @Autowired
     private ICollectService collectService;
+    @Autowired
+    private IUserTopicCostService userTopicCostService;
 
     // 话题详情
     @GetMapping("/{id}")
     public String detail(@PathVariable Integer id, Model model, HttpServletRequest request) {
         // 查询话题详情
         Topic topic = topicService.selectById(id);
+        User topicUser = userService.selectById(topic.getUserId());
         Assert.notNull(topic, "话题不存在");
         // 查询话题关联的标签
         List<Tag> tags = tagService.selectByTopicId(id);
-        // 查询话题的作者信息
-        User topicUser = userService.selectById(topic.getUserId());
         // 查询话题有多少收藏
         List<Collect> collects = collectService.selectByTopicId(id);
-        // 如果自己登录了，查询自己是否收藏过这个话题
+        // 如果自己登录了，查询自己是否收藏过这个话题，并扣除积分等
         if (getUser() != null) {
-            Collect collect = collectService.selectByTopicIdAndUserId(id, getUser().getId());
+            User user = userService.selectById(getUser().getId());
+            Collect collect = collectService.selectByTopicIdAndUserId(id, user.getId());
             model.addAttribute("collect", collect);
         }
         // 话题浏览量+1
-        String ip = IpUtil.getIpAddr(request);
-        ip = ip.replace(":", "_").replace(".", "_");
-        topic = topicService.updateViewCount(topic, ip);
+//        String ip = IpUtil.getIpAddr(request);
+//        ip = ip.replace(":", "_").replace(".", "_");
+//        topic = topicService.updateViewCount(topic, ip);
 
         model.addAttribute("topic", topic);
         model.addAttribute("tags", tags);
@@ -76,6 +80,11 @@ public class TopicController extends BaseController {
     public String create(String tag, Model model) {
         model.addAttribute("tag", tag);
         return render("topic/create");
+    }
+    @GetMapping("/create_file")
+    public String createFile(String tag, Model model) {
+        model.addAttribute("tag", tag);
+        return render("topic_file/create");
     }
 
     // 编辑话题
@@ -104,4 +113,5 @@ public class TopicController extends BaseController {
         model.addAttribute("page", iPage);
         return render("tag/tag");
     }
+
 }

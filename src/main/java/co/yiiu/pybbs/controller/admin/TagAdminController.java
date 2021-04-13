@@ -1,6 +1,7 @@
 package co.yiiu.pybbs.controller.admin;
 
 import co.yiiu.pybbs.model.Tag;
+import co.yiiu.pybbs.model.User;
 import co.yiiu.pybbs.service.ITagService;
 import co.yiiu.pybbs.util.FileUtil;
 import co.yiiu.pybbs.util.Result;
@@ -12,6 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by tomoya.
@@ -36,6 +40,26 @@ public class TagAdminController extends BaseAdminController {
         model.addAttribute("name", name);
         return "admin/tag/list";
     }
+
+
+    // 解禁用户
+    @GetMapping("/add")
+    @ResponseBody
+    public Result jiejin(String tagName) {
+        List<Tag> havetags = tagService.selectAll();
+        List<String> havetagsString = new ArrayList<>();
+        for(int i=0;i < havetags.size(); i++){
+            havetagsString.add(havetags.get(i).getName());
+        }
+        if (havetagsString.contains(tagName)){
+            return error("已经有这个分区了");
+        }
+        System.out.println(tagName);
+        tagService.insertTag(tagName);
+        return success();
+    }
+
+
 
     @RequiresPermissions("tag:edit")
     @GetMapping("/edit")

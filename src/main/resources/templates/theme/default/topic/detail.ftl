@@ -34,6 +34,7 @@
                                 <span>${model.formatDate(topic.inTime)}</span>
                                 <span>•</span>
                                 <span>${topic.view!1}次点击</span>
+                                <button onclick="jubaotopic('${topic.id}')" class="btn btn-xs btn-danger">举报</button>
                                 <#if _user?? && topic.userId == _user.id>
                                     <span>•</span>
                                     <span><a href="/topic/edit/${topic.id}">编辑</a></span>
@@ -114,6 +115,20 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
     <script>
+        function jubaotopic(id) {
+            if (confirm("确定要举报这个帖子吗？我们将对这篇文章进行审查。")) {
+                $.get("/api/topic/jubao?id=" + id, function (data) {
+                    if (data.code === 200) {
+                        toast("举报成功", "success");
+                        // setTimeout(function () {
+                        //     window.location.reload();
+                        // }, 700);
+                    } else {
+                        toast(data.description);
+                    }
+                })
+            }
+        }
         <#if _user??>
         $(function () {
             hljs.initHighlightingOnLoad();

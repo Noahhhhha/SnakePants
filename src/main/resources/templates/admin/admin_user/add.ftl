@@ -32,12 +32,22 @@
                             </div>
                             <div class="form-group">
                                 <label>角色</label>
-                                <p>
+                                <div>
                                     <#list roles as role>
-                                        <input type="radio" name="roleId" value="${role.id}" id="role_${role.id}">&nbsp;
-                                        <label for="role_${role.id}">${role.name!}</label>
+                                        <p>
+                                            <#--                                        小圆圈-->
+                                            <input clsss="guaiyoubingde" type="radio" name="roleId" value="${role.id}" id="role_${role.id}">&nbsp;
+
+                                            <label for="role_${role.id}">${role.name!}</label>
+
+                                            <div class="divtagsclass" id="divtags_${role.id}" >
+                                                <label for="tags">标签</label>
+                                                <input type="text" name="tags" id="tags_${role.id}" value="${tags!}" class="form-control"
+                                                       placeholder="标签, 多个标签以 英文逗号 隔开"/>
+                                            </div>
+                                        </p>
                                     </#list>
-                                </p>
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-xs btn-primary">保存</button>
                         </form>
@@ -48,10 +58,22 @@
     </section>
     <script>
         $(function () {
+            $(".divtagsclass").hide();
+            $("#role_3").click(function () { // 3是分区管理员
+                $("#divtags_3").show();
+            })
+            $("#role_1").click(function () { // 3是分区管理员
+                $("#divtags_3").hide();
+            })
+            $("#role_2").click(function () { // 3是分区管理员
+                $("#divtags_3").hide();
+            })
+
             $("#form").submit(function () {
                 var username = $("#username").val();
                 var password = $("#password").val();
                 var roleId = $("input[name='roleId']:checked").val();
+                var tags = $("#tags_3").val();
                 if (!username) {
                     toast('用户名不能为空');
                     return false;
@@ -69,18 +91,19 @@
                     data: {
                         username: username,
                         password: password,
-                        roleId: roleId
+                        roleId: roleId,
+                        tags:tags,
                     },
-                    success: function (data) {
-                        if (data.code === 200) {
-                            toast('添加成功');
-                            setTimeout(function () {
-                                window.location.href = '/admin/admin_user/list';
-                            }, 1000);
-                        } else {
-                            toast(data.description);
-                        }
-                    }
+                    // success: function (data) {
+                    //     if (data.code === 200) {
+                    //         suc('添加成功');
+                    //         setTimeout(function () {
+                    //             window.location.href = '/admin/admin_user/list';
+                    //         }, 1000);
+                    //     } else {
+                    //         toast(data.description);
+                    //     }
+                    // }
                 })
                 return false;
             })

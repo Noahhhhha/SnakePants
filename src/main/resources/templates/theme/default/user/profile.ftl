@@ -8,6 +8,10 @@
                         <img src="${user.avatar!}" class="mr-3 avatar avatar-lg" alt="avatar"/>
                         <div class="media-body">
                             <h3 style="margin-top: 0">${user.username!}</h3>
+                            <#if user.isJinyan == 1>
+                                <p class="text-danger">该用户已被禁言</p>
+                            </#if>
+                            <button onclick="jubao('${user.id}')" class="btn btn-xs btn-danger">举报</button>
                             <div>积分：<a href="/top100">${user.score}</a></div>
                             <#if user.bio??>
                                 <div><i class="gray">${user.bio!}</i></div>
@@ -48,4 +52,20 @@
             </#if>
         </div>
     </div>
+    <script>
+        function jubao(id) {
+            if (confirm("确定要举报这个用户吗？我们将对其言行进行监督。")) {
+                $.get("/api/user/jubao?id=" + id, function (data) {
+                    if (data.code === 200) {
+                        toast("举报成功", "success");
+                        // setTimeout(function () {
+                        //     window.location.reload();
+                        // }, 700);
+                    } else {
+                        toast(data.description);
+                    }
+                })
+            }
+        }
+    </script>
 </@html>

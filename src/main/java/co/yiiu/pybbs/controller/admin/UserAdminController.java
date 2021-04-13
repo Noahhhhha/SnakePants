@@ -69,6 +69,28 @@ public class UserAdminController extends BaseAdminController {
         return success();
     }
 
+    // 禁言用户
+    @RequiresPermissions("user:jinyan")
+    @GetMapping("/jinyan")
+    @ResponseBody
+    public Result jinyan(Integer id) {
+        User user = userService.selectById(id);
+        user.setIsJinyan(1);
+        userService.update(user);
+        return success();
+    }
+
+    // 解禁用户
+    @RequiresPermissions("user:jinyan")
+    @GetMapping("/jiejin")
+    @ResponseBody
+    public Result jiejin(Integer id) {
+        User user = userService.selectById(id);
+        user.setIsJinyan(0);
+        userService.update(user);
+        return success();
+    }
+
     // 刷新token
     @RequiresPermissions("user:refresh_token")
     @GetMapping("/refreshToken")

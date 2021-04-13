@@ -40,11 +40,25 @@
                     <#list page.records as user>
                         <tr>
                             <td>${user.id}</td>
-                            <td>${user.username!}</td>
+                            <td>
+                                ${user.username!}
+                                <#if user.isJubao != 0>
+                                    <p class="text-danger">被举报次数：${user.isJubao!}</p>
+                                </#if>
+                            </td>
                             <td>${user.email!}</td>
                             <td>${user.score!0}</td>
                             <td>${user.inTime?datetime}</td>
                             <td>
+<#--                                <#if sec.hasPermisson("user:jinyan")>-->
+                                    <#if user.isJinyan == 0>
+                                        <button onclick="jinyan('${user.id}')" class="btn btn-xs btn-danger">禁言</button>
+                                    </#if>
+                                    <#if user.isJinyan == 1>
+                                        <button onclick="jiejin('${user.id}')" class="btn btn-xs btn-primary">解禁</button>
+                                    </#if>
+<#--                                </#if>-->
+
                                 <#if sec.hasPermission("user:edit")>
                                     <a href="/admin/user/edit?id=${user.id}" class="btn btn-xs btn-warning">编辑</a>
                                 </#if>
@@ -63,12 +77,43 @@
     </section>
     <script>
         <#if sec.hasPermission("user:delete")>
+            function deleteUser(id) {
+                if (confirm("确定要删除这个用户吗？\n 删除用户后，它发的帖子评论以及收藏就都没了，还请三思!!")) {
+                    $.get("/admin/user/delete?id=" + id, function (data) {
+                        if (data.code === 200) {
+                            toast("删除成功", "success");
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 700);
+                        } else {
+                            toast(data.description);
+                        }
+                    })
+                }
+            }
+        </#if>
+<#--        <#if sec.hasPermission("user:jinyan")>-->
+            function jinyan(id) {
+                if (confirm("确定要禁言这个用户吗？\n 禁言用户后，它将不能发表帖子和评论，还请三思!!")) {
+                    $.get("/admin/user/jinyan?id=" + id, function (data) {
+                        if (data.code === 200) {
+                            toast("禁言成功", "success");
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 700);
+                        } else {
+                            toast(data.description);
+                        }
+                    })
+                }
+            }
+<#--        </#if>-->
 
-        function deleteUser(id) {
-            if (confirm("确定要删除这个用户吗？\n 删除用户后，它发的帖子评论以及收藏就都没了，还请三思!!")) {
-                $.get("/admin/user/delete?id=" + id, function (data) {
+<#--        <#if sec.hasPermission("user:jinyan")>-->
+            function jiejin(id) {
+                $.get("/admin/user/jiejin?id=" + id, function (data) {
                     if (data.code === 200) {
-                        toast("删除成功", "success");
+                        toast("解禁成功", "success");
                         setTimeout(function () {
                             window.location.reload();
                         }, 700);
@@ -77,8 +122,6 @@
                     }
                 })
             }
-        }
-
-        </#if>
+<#--        </#if>-->
     </script>
 </@html>

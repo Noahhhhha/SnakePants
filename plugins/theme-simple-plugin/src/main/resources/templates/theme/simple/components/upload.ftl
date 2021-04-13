@@ -1,7 +1,8 @@
 <form onsubmit="return;" id="uploadImageForm">
     <input type="hidden" id="type" value="image"/>
-    <input type="file" style="display: none;" onchange="uploadImageFileChange()" id="uploadImageFileEle" multiple
-           accept="image/jpeg,image/jpg,image/png,image/gif,video/mp4"/>
+    <input type="file" style="display: none;" onchange="uploadImageFileChange()" id="uploadImageFileEle"
+           multiple accept="image/jpeg,image/jpg,image/png,image/gif,video/mp4"/>
+<#--    ,file/pdf,file/rar,file/zip,file/word-->
 </form>
 <script>
     function uploadFile(type) {
@@ -37,6 +38,9 @@
                         } else if (type === "video") {
                             insertContent += "<video class='embed-responsive embed-responsive-16by9' controls><source src='" + url + "' type='video/mp4'></video>\n\n";
                         }
+                        // else if (type == "file"){
+                        //     insertContent +=  url
+                        // }
                     }
                     content.val(text + insertContent);
                     content.focus();

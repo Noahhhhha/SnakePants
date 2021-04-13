@@ -1,7 +1,6 @@
 <form onsubmit="return;" id="uploadImageForm">
     <input type="hidden" id="type" value="image"/>
-    <input type="file" class="d-none" id="uploadImageFileEle" multiple
-           accept="image/jpeg,image/jpg,image/png,image/gif,video/mp4"/>
+    <input type="file" class="d-none" id="uploadImageFileEle"/>
 </form>
 <style>
     .upload-progress-fade {
@@ -98,6 +97,8 @@
                             insertContent += "![image](" + url + ")\n\n"
                         } else if (type === "video") {
                             insertContent += "<video class='embed-responsive embed-responsive-16by9' controls><source src='" + url + "' type='video/mp4'></video>\n\n";
+                        }else if(type == "file"){
+                            insertContent += url + "\n\n"
                         }
                     }
                     window.editor.getDoc().setValue(oldContent + insertContent);

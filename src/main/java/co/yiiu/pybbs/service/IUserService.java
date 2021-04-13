@@ -47,4 +47,5 @@ public interface IUserService {
 
     // 删除redis缓存
     void delRedisUser(User user);
+
 }

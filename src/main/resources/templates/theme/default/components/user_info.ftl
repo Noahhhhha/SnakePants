@@ -18,6 +18,16 @@
                 <span class="fa fa-pencil"></span><i>发布话题</i>
             </a>
         </div>
+        <div class="mt-2">
+            <a href="/topic/create_file">
+                <span class="fa fa-pencil"></span><i>发布资源</i>
+            </a>
+        </div>
+        <div class="mt-2">
+            <a href="/public/cn">
+                <span class="fa fa-pencil"></span><i>发布投票</i>
+            </a>
+        </div>
     </div>
     <div class="card-footer pt-2 pb-2" style="background-color: white; font-size: 14px;">
         <div class="row">

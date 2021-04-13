@@ -11,6 +11,38 @@
         test_id AS testId, name, age, test_type AS testType, role, phone
     </sql>-->
 
+    <select id="selectAllBySomething" resultType="map">
+        select t.*, u.username, u.avatar
+        from topic t
+        left join user u on t.user_id = u.id
+        left join topic_tag tt on tt.topic_id = t.id
+        left join tag tag on tag.id = tt.tag_id
+
+        <where>
+            <if test="tab == 'good'">
+                t.good = true
+            </if>
+            <if test="tab == 'noanswer'">
+                t.comment_count = 0
+            </if>
+            <if test="tab == 'hot'">
+                date(t.in_time) &lt;= date_add(curdate(), interval 1 day)
+                and date(t.in_time) &gt;= date_sub(curdate(), interval 7 day)
+            </if>
+            <if test="tag != 'all'">
+                and tag.name = #{tag}
+            </if>
+        </where>
+        group by t.id
+
+        <if test="tab == 'all' or tab == 'newest' or tab == 'noanswer' or tab == 'good'">
+            order by t.top desc, t.in_time desc
+        </if>
+        <if test="tab == 'hot'">
+            order by t.comment_count desc, t.in_time desc
+        </if>
+    </select>
+
     <select id="selectAll" resultType="map">
         select t.*, u.username, u.avatar
         from topic t
@@ -41,6 +73,7 @@
         left join user u on t.user_id = u.id
         left join topic_tag tt on tt.topic_id = t.id
         left join tag tag on tag.id = tt.tag_id
+
         <where>
             tag.name = #{tag}
         </where>
@@ -59,6 +92,11 @@
         select t.*, u.username
         from topic t
         left join user u on t.user_id = u.id
+        <if test="roleId == 3">
+            left join admin_user_tag aut on #{adminUserId} = aut.admin_user_id
+            left join topic_tag tt on t.id = tt.topic_id
+        </if>
+
         <where>
             <if test="startDate != null and endDate != null">
                 t.in_time between #{startDate} and #{endDate}
@@ -66,7 +104,13 @@
             <if test="username != null">
                 and u.username = #{username}
             </if>
+            <if test="roleId==3">
+                aut.tag_id = tt.tag_id
+            </if>
         </where>
+        <if test="roleId==3">
+            group by t.id
+        </if>
         order by t.in_time desc
     </select>
 

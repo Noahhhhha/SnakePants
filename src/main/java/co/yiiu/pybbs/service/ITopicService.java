@@ -1,5 +1,6 @@
 package co.yiiu.pybbs.service;
 
+import co.yiiu.pybbs.model.AdminUser;
 import co.yiiu.pybbs.model.Topic;
 import co.yiiu.pybbs.model.User;
 import co.yiiu.pybbs.util.MyPage;
@@ -20,6 +21,9 @@ public interface ITopicService {
     // 分页查询话题
     MyPage<Map<String, Object>> selectAll(Integer pageNo, String tab);
 
+    // 分页查询话题
+    MyPage<Map<String, Object>> selectAllBySomething(Integer pageNo, String tab, String tag);
+
     // 查询话题作者其它的话题
     List<Topic> selectAuthorOtherTopic(Integer userId, Integer topicId, Integer limit);
 
@@ -27,7 +31,7 @@ public interface ITopicService {
     MyPage<Map<String, Object>> selectByUserId(Integer userId, Integer pageNo, Integer pageSize);
 
     // 保存话题
-    Topic insert(String title, String content, String tags, User user, HttpSession session);
+    Topic insert(String title, String content, String tags, User user, Integer costpoints, Integer category, HttpSession session);
 
     // 根据id查询话题
     Topic selectById(Integer id);
@@ -47,7 +51,7 @@ public interface ITopicService {
     // 根据用户id删除帖子
     void deleteByUserId(Integer userId);
 
-    MyPage<Map<String, Object>> selectAllForAdmin(Integer pageNo, String startDate, String endDate, String username);
+    MyPage<Map<String, Object>> selectAllForAdmin(Integer pageNo, String startDate, String endDate, String username, AdminUser adminUserId);
 
     // 查询今天新增的话题数
     int countToday();

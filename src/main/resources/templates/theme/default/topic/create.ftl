@@ -19,12 +19,19 @@
                             <textarea name="content" id="content" class="form-control"
                                       placeholder="内容，支持Markdown语法"></textarea>
                         </div>
-                        <#--<div class="form-group">
+                        <div class="form-group">
                           <label for="tags">标签</label>
-                          <input type="text" name="tags" id="tags" value="${tag!}" class="form-control"
+                          <input type="text" name="tags" id="tags" value="${tags!}" class="form-control"
                                  placeholder="标签, 多个标签以 英文逗号 隔开"/>
-                        </div>-->
-                        <input type="hidden" name="tag" id="tag" value="${tag!}"/>
+                        </div>
+<#--                        <input type="hidden" name="tag" id="tag" value="${tag!}"/>-->
+
+                        <div class="form-group">
+                            <label for="costpoints">设置积分门槛</label>
+                            <input type="text" name="costpoints" id="costpoints" value="${costpoints!"0"}" class="form-control"
+                                   placeholder="积分门槛,默认为0"/>
+                        </div>
+
                         <div class="form-group">
                             <button type="button" id="btn" class="btn btn-info">发布话题</button>
                         </div>
@@ -57,17 +64,17 @@
 
             $("#btn").click(function () {
                 var title = $("#title").val();
-                var tag = $("#tag").val();
+                var tags = $("#tags").val();
+                var costpoints = $("#costpoints").val();
                 var content = window.editor.getDoc().getValue();
-                // var tags = $("#tags").val();
                 if (!title || title.length > 120) {
                     err("请输入标题，且最大长度在120个字符以内");
                     return;
                 }
-                // if (!tags || tags.split(",").length > 5) {
-                //   err("请输入标签，且最多只能填5个");
-                //   return;
-                // }
+                if (!tags || tags.split(",").length > 5) {
+                  err("请输入标签，且最多只能填5个");
+                  return;
+                }
                 var _this = this;
                 $(_this).button("loading");
                 $.ajax({
@@ -83,8 +90,9 @@
                     data: JSON.stringify({
                         title: title,
                         content: content,
-                        tag: tag,
-                        // tags: tags,
+                        tags: tags,
+                        costpoints: costpoints,
+                        category: 1,
                     }),
                     success: function (data) {
                         if (data.code === 200) {

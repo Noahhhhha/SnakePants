@@ -88,5 +88,8 @@
                 </div>
             </div>
         </#if>
+        <#if !_user?? >
+            <div class="nocomment-tip">登陆之后就可以参与讨论哦</div>
+        </#if>
     </@tag_topic_comments>
 </#macro>

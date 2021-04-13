@@ -32,6 +32,11 @@
                                 <input type="password" id="password" name="password" class="form-control"
                                        placeholder="密码">
                             </div>
+<#--                            <div class="divtagsclass" id="divtags" >-->
+<#--                                <label for="tags">标签</label>-->
+<#--                                <input type="text" name="tags" id="tags" value="${tags!}" class="form-control"-->
+<#--                                       placeholder="标签, 多个标签以 英文逗号 隔开"/>-->
+<#--                            </div>-->
                             <div class="form-group">
                                 <label>角色</label>
                                 <p>
@@ -56,6 +61,7 @@
                 var oldPassword = $("#oldPassword").val();
                 var password = $("#password").val();
                 var roleId = $("input[name='roleId']:checked").val();
+                var tags = $("#tags").val();
                 if (!username) {
                     toast('用户名不能为空');
                     return false;
@@ -70,7 +76,8 @@
                         id: '${adminUser.id}',
                         username: username,
                         password: password,
-                        roleId: roleId
+                        roleId: roleId,
+                        tags:tags,
                     },
                     success: function (data) {
                         if (data.code === 200) {

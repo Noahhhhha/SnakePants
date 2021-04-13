@@ -143,6 +143,13 @@ a, a:hover {
     border-bottom: 1px solid #eee;
 }
 
+.tag-item-list {
+    margin-bottom: 10px;
+    padding-left: 10px;
+    height: 15px;
+    border-bottom: 1px solid #eee;
+}
+
 .excerpt {
     display: block;
     margin-top: 10px;
@@ -224,4 +231,11 @@ a, a:hover {
 
 .welcome p:last-child {
     margin-bottom: 0;
+}
+
+.whitediv{
+    width:500px; /*设置div宽度为500像素*/
+    height:200px; /*设置div高度为200像素*/
+    background:#000; /*设置div背景色为黑色*/
+    margin:0 auto; /*设置div居中显示*/
 }

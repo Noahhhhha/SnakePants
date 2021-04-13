@@ -17,9 +17,9 @@ public interface IAdminUserService {
     // 查询所有的后台用户
     List<Map<String, Object>> selectAll();
 
-    void update(AdminUser adminUser);
+    void update(AdminUser adminUser, String tags);
 
-    void insert(AdminUser adminUser);
+    int insert(AdminUser adminUser,String tags);
 
     void delete(Integer id);
 

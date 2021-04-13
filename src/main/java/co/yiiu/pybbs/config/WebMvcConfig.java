@@ -44,10 +44,15 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         registry.addInterceptor(userInterceptor).addPathPatterns("/settings/*", "/topic/create", "/topic/edit/*");
     }
 
-    @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/", "file:./static/");
-    }
+//    @Override
+//    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/", "file:./static/");
+//    }
+@Override
+protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+    registry.addResourceHandler("/data/**").addResourceLocations("classpath:/data/", "file:./data/");
+    registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/", "file:./static/");
+}
 
     // 配置网站默认语言
     @Bean

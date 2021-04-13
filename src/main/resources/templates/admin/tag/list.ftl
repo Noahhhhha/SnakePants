@@ -44,6 +44,14 @@
                         <button type="submit" class="btn btn-primary btn-sm">搜索</button>
                     </div>
                 </form>
+
+                <form class="form-inline">
+                    <div class="form-group" style="margin-bottom: 10px;">
+                        <input id="tagname" type="text" class="form-control" placeholder="标签名">
+                        <button onclick="add()" class="btn btn-primary btn-sm">添加</button>
+                    </div>
+                </form>
+
                 <table class="table table-bordered table-striped">
                     <thead>
                     <tr>
@@ -99,6 +107,21 @@
                     }
                 })
             }
+        }
+
+        function add() {
+            var tagName = $("#tagname").val();
+            console.log(tagName);
+            $.get("/admin/tag/add?tagName=" + tagName, function (data) {
+                if (data.code === 200) {
+                    suc("添加成功", "success");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 700);
+                } else {
+                    err(data.description);
+                }
+            })
         }
 
         </#if>

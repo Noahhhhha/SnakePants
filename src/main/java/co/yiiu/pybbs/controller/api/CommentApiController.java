@@ -1,6 +1,7 @@
 package co.yiiu.pybbs.controller.api;
 
 import co.yiiu.pybbs.exception.ApiAssert;
+import co.yiiu.pybbs.exception.ApiException;
 import co.yiiu.pybbs.model.Comment;
 import co.yiiu.pybbs.model.Topic;
 import co.yiiu.pybbs.model.User;
@@ -34,6 +35,8 @@ public class CommentApiController extends BaseApiController {
     @PostMapping
     public Result create(@RequestBody Map<String, String> body, HttpSession session) {
         User user = getApiUser();
+        if (user.getIsJinyan() == 1)
+            throw new ApiException("您已被禁言，无法发送评论哦");
         ApiAssert.isTrue(user.getActive(), "你的帐号还没有激活，请去个人设置页面激活帐号");
         String content = body.get("content");
         Integer topicId = StringUtils.isEmpty(body.get("topicId")) ? null : Integer.parseInt(body.get("topicId"));
@@ -61,6 +64,8 @@ public class CommentApiController extends BaseApiController {
     @PutMapping("/{id}")
     public Result update(@PathVariable Integer id, @RequestBody Map<String, String> body) {
         User user = getApiUser();
+        if (user.getIsJinyan() == 1)
+            throw new ApiException("您已被禁言，无法更新评论哦");
         String content = body.get("content");
         ApiAssert.notNull(id, "评论ID呢？");
         ApiAssert.notEmpty(content, "请输入评论内容");

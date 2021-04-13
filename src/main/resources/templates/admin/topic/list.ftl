@@ -52,8 +52,15 @@
                     <#list page.records as topic>
                         <tr>
                             <td>${topic.id}</td>
-                            <td><a href="/topic/${topic.id}" target="_blank">${topic.title}</a></td>
-                            <td><a href="/user/${topic.username}" target="_blank">${topic.username}</a></td>
+                            <td>
+                                <a href="/topic/${topic.id}" target="_blank">${topic.title}</a>
+                                <#if topic.isJubao != 0>
+                                    <p class="text-danger">被举报次数：${topic.isJubao!}</p>
+                                </#if>
+                            </td>
+                            <td>
+                                <a href="/user/${topic.username}" target="_blank">${topic.username}</a>
+                            </td>
                             <td>${topic.commentCount}</td>
                             <td>
                                 <#if topic.top>

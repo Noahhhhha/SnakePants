@@ -42,7 +42,7 @@
                                 <#if sec.hasPermission('admin_user:edit')>
                                     <a href="/admin/admin_user/edit?id=${adminUser.id}" class="btn btn-xs btn-warning">编辑</a>
                                 </#if>
-                                <#if sec.hasPermission('admin_user:delete')>
+                                <#if sec.hasPermission('admin_user:edit')>
                                     <a href="javascript:if(confirm('确定要删除吗？')) location.href='/admin/admin_user/delete?id=${adminUser.id}'"
                                        class="btn btn-xs btn-danger">删除</a>
                                 </#if>

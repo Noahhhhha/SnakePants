@@ -20,6 +20,9 @@
                         </a>
                     </li>
                 </ul>
+
+
+
                 <form class="form-inline my-2 my-lg-0 ml-2 d-none d-md-block" action="/search">
                     <div class="input-group">
                         <input class="form-control" type="search" name="keyword" placeholder="回车搜索" value="${keyword!}"
@@ -29,6 +32,7 @@
                         </div>
                     </div>
                 </form>
+
             </div>
             <ul class="navbar-nav">
                 <#if _user??>
@@ -65,3 +69,13 @@
         </div>
     </nav>
 </#macro>
+<#--<script>-->
+<#--    $(function () {-->
+<#--        $("#searchboxclick").click(function (){-->
+<#--            var keyword = $("#searchbox").val();-->
+<#--            // if (keyword == null || kyeword == "")-->
+<#--            //     keyword = "none";-->
+<#--            window.open('/?tab=all&tag=all&keyword='+keyword);-->
+<#--        })-->
+<#--    })-->
+<#--</script>-->

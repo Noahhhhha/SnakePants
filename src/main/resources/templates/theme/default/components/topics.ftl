@@ -3,9 +3,21 @@
         <div class="media">
             <a href="/user/${topic.username!}" class="mr-3"><img src="${topic.avatar!}" class="avatar" alt=""></a>
             <div class="media-body">
-                <div class="title">
-                    <a href="/topic/${topic.id}">${topic.title!?html}</a>
-                </div>
+
+                    <div class="title">
+<#--                        <a href="/topic/${topic.id}">${topic.title!?html}</a>-->
+                        <a href="javascript:findDetail(${topic.id})">${topic.title!?html}</a>
+                        <#if topic.category == 1>
+                            <span class="badge badge-success">话题贴</span>
+                        <#elseif topic.category == 2>
+                            <span class="badge badge-warning">资源贴</span>
+                        </#if>
+                        <#if topic.costpoints != 0>
+                            <span>•</span>
+                            <span class="badge badge-pill badge-danger">${topic.costpoints!}</span>
+                        </#if>
+                    </div>
+
                 <div class="gray">
                     <#--<#if (topic.up - topic.down) &gt; 0>
                       <i class="fa fa-chevron-up"></i>
@@ -19,6 +31,7 @@
                         <span class="badge badge-info">精华</span>
                         <span>•</span>
                     </#if>
+
                     <span><a href="/user/${topic.username!}">${topic.username!}</a></span>
                     <span class="hidden-sm hidden-xs">•</span>
                     <span class="hidden-sm hidden-xs"><a href="/topic/${topic.id}">${topic.commentCount!0}个评论</a></span>
@@ -29,7 +42,7 @@
                     <#if tags && topic.tags??>
                         <span>•</span>
                         <#list topic.tags as tag>
-                            <a href="/topic/tag/${tag.name}"><span class="badge badge-info">${tag.name}</span></a>
+                            <a href="/topic/tag/${tag.name}"><span class="badge badge-info">${tag.name}</span></a> <#-- 按 tag 搜索 topic list -->
                         </#list>
                     </#if>
                 </div>
@@ -40,3 +53,29 @@
         </#if>
     </#list>
 </#macro>
+
+<script>
+    function findDetail(id){
+        $.ajax({
+            url: '/api/topic/'+ id,
+            type: 'get',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (data) {
+                if (data.code === 200) {
+                    if(data.costType == 0){
+                        suc("感谢您的浏览，会扣除"+data.costpoints+"积分");
+                    }else{
+                        suc("感谢您的浏览");
+                    }
+                    setTimeout(function () {
+                        window.location.href = "/topic/" + id
+                    }, 700);
+                } else {
+                    err(data.description);
+                }
+            }
+        })
+    }
+</script>
+

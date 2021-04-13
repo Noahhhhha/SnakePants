@@ -5,6 +5,7 @@ import co.yiiu.pybbs.model.User;
 import co.yiiu.pybbs.service.*;
 import co.yiiu.pybbs.util.MyPage;
 import co.yiiu.pybbs.util.Result;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,16 @@ public class UserApiController extends BaseApiController {
     private ICollectService collectService;
     @Autowired
     private IOAuthUserService oAuthUserService;
+
+    // 解禁用户
+    @GetMapping("/jubao")
+    @ResponseBody
+    public Result jubao(Integer id) {
+        User user = userService.selectById(id);
+        user.setIsJubao(user.getIsJubao()+1);
+        userService.update(user);
+        return success();
+    }
 
     // 用户的个人信息
     @GetMapping("/{username}")

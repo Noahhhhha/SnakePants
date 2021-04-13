@@ -1,6 +1,7 @@
 package co.yiiu.pybbs.service.impl;
 
 import co.yiiu.pybbs.mapper.TopicMapper;
+import co.yiiu.pybbs.model.AdminUser;
 import co.yiiu.pybbs.model.Tag;
 import co.yiiu.pybbs.model.Topic;
 import co.yiiu.pybbs.model.User;
@@ -52,6 +53,8 @@ public class TopicService implements ITopicService {
     private INotificationService notificationService;
     @Autowired
     private IndexedService indexedService;
+    @Autowired
+    private IUserTopicCostService userTopicCostService;
 
     @Override
     public MyPage<Map<String, Object>> search(Integer pageNo, Integer pageSize, String keyword) {
@@ -70,6 +73,17 @@ public class TopicService implements ITopicService {
         tagService.selectTagsByTopicId(page);
         return page;
     }
+
+    @Override
+    public MyPage<Map<String, Object>> selectAllBySomething(Integer pageNo, String tab, String tag) {
+        MyPage<Map<String, Object>> page = new MyPage<>(pageNo, Integer.parseInt(systemConfigService.selectAllConfig()
+                .get("page_size").toString()));
+        page = topicMapper.selectAllBySomething(page, tab, tag);
+        // 查询话题的标签
+        tagService.selectTagsByTopicId(page);
+        return page;
+    }
+
 
     // 查询话题作者其它的话题
     @Override
@@ -99,7 +113,7 @@ public class TopicService implements ITopicService {
 
     // 保存话题
     @Override
-    public Topic insert(String title, String content, String tags, User user, HttpSession session) {
+    public Topic insert(String title, String content, String tags, User user, Integer costpoints, Integer category, HttpSession session) {
         Topic topic = new Topic();
         topic.setTitle(Jsoup.clean(title, Whitelist.simpleText()));
         topic.setContent(content);
@@ -110,6 +124,8 @@ public class TopicService implements ITopicService {
         topic.setView(1);
         topic.setCollectCount(0);
         topic.setCommentCount(0);
+        topic.setCostpoints(costpoints);
+        topic.setCategory(category);
         topicMapper.insert(topic);
         // 增加用户积分
         user.setScore(user.getScore() + Integer.parseInt(systemConfigService.selectAllConfig().get("create_topic_score")
@@ -182,6 +198,8 @@ public class TopicService implements ITopicService {
         tagService.reduceTopicCount(id);
         // 删除相应的关联标签
         topicTagService.deleteByTopicId(id);
+        // 删除帖子购买订单
+        userTopicCostService.deleteUserTopic(topic.getUserId(), topic.getId());
         // 减去用户积分
         User user = userService.selectById(topic.getUserId());
         user.setScore(user.getScore() - Integer.parseInt(systemConfigService.selectAllConfig().get("delete_topic_score")
@@ -221,10 +239,10 @@ public class TopicService implements ITopicService {
 
     @Override
     public MyPage<Map<String, Object>> selectAllForAdmin(Integer pageNo, String startDate, String endDate, String
-            username) {
+            username, AdminUser adminUser) {
         MyPage<Map<String, Object>> iPage = new MyPage<>(pageNo, Integer.parseInt((String) systemConfigService
                 .selectAllConfig().get("page_size")));
-        return topicMapper.selectAllForAdmin(iPage, startDate, endDate, username);
+        return topicMapper.selectAllForAdmin(iPage, startDate, endDate, username, adminUser.getId(), adminUser.getRoleId());
     }
 
     // 查询今天新增的话题数

@@ -1,5 +1,6 @@
 package co.yiiu.pybbs.mapper;
 
+import co.yiiu.pybbs.model.AdminUser;
 import co.yiiu.pybbs.model.Topic;
 import co.yiiu.pybbs.util.MyPage;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -16,12 +17,14 @@ public interface TopicMapper extends BaseMapper<Topic> {
 
     MyPage<Map<String, Object>> selectAll(MyPage<Map<String, Object>> iPage, @Param("tab") String tab);
 
+    MyPage<Map<String, Object>> selectAllBySomething(MyPage<Map<String, Object>> iPage, @Param("tab") String tab, @Param("tag") String tag);
+
     MyPage<Map<String, Object>> selectByTag(MyPage<Map<String, Object>> iPage, @Param("tag") String tag);
 
     MyPage<Map<String, Object>> selectByUserId(MyPage<Map<String, Object>> iPage, @Param("userId") Integer userId);
 
     MyPage<Map<String, Object>> selectAllForAdmin(MyPage<Map<String, Object>> iPage, @Param("startDate") String
-            startDate, @Param("endDate") String endDate, @Param("username") String username);
+            startDate, @Param("endDate") String endDate, @Param("username") String username, @Param("adminUserId") Integer adminUserId, @Param("roleId") Integer roleId);
 
     int countToday();
 

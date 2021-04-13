@@ -1,6 +1,7 @@
 package co.yiiu.pybbs.service.impl;
 
 import co.yiiu.pybbs.mapper.TagMapper;
+import co.yiiu.pybbs.model.AdminUserTag;
 import co.yiiu.pybbs.model.Tag;
 import co.yiiu.pybbs.model.TopicTag;
 import co.yiiu.pybbs.service.ISystemConfigService;
@@ -36,6 +37,15 @@ public class TagService implements ITagService {
     private ITopicTagService topicTagService;
     @Autowired
     private ISystemConfigService systemConfigService;
+    @Autowired
+    private AdminUserTagService adminUserTagService;
+
+
+    @Override
+    public List<Tag> selectAll() {
+        QueryWrapper<Tag> wrapper = new QueryWrapper<>();
+        return tagMapper.selectList(wrapper);
+    }
 
     @Override
     public void selectTagsByTopicId(MyPage<Map<String, Object>> page) {
@@ -74,6 +84,20 @@ public class TagService implements ITagService {
         List<TopicTag> topicTags = topicTagService.selectByTopicId(topicId);
         if (!topicTags.isEmpty()) {
             List<Integer> tagIds = topicTags.stream().map(TopicTag::getTagId).collect(Collectors.toList());
+            QueryWrapper<Tag> wrapper = new QueryWrapper<>();
+            wrapper.lambda().in(Tag::getId, tagIds);
+            return tagMapper.selectList(wrapper);
+        }
+        return Lists.newArrayList();
+    }
+
+    @Override
+    public List<Tag> selectByAdminUserId(Integer adminUserId) {
+        List<AdminUserTag> adminUserTags = adminUserTagService.selectByAdminUserId(adminUserId);
+        if (!adminUserTags.isEmpty()) {
+
+            List<Integer> tagIds = adminUserTags.stream().map(AdminUserTag::getTagId).collect(Collectors.toList());
+
             QueryWrapper<Tag> wrapper = new QueryWrapper<>();
             wrapper.lambda().in(Tag::getId, tagIds);
             return tagMapper.selectList(wrapper);

@@ -13,6 +13,8 @@ import java.util.Map;
  * https://yiiu.co
  */
 public interface ITagService {
+    List<Tag> selectAll();
+
     void selectTagsByTopicId(MyPage<Map<String, Object>> page);
 
     Tag selectById(Integer id);
@@ -23,6 +25,8 @@ public interface ITagService {
 
     // 根据话题查询关联的所有标签
     List<Tag> selectByTopicId(Integer topicId);
+    // 根据话题查询关联的所有标签
+    List<Tag> selectByAdminUserId(Integer admimUserId);
 
     // 将创建话题时填的tag处理并保存
     List<Tag> insertTag(String newTags);

@@ -34,6 +34,10 @@
         from comment c
         left join topic t on c.topic_id = t.id
         left join user u on u.id = c.user_id
+        <if test="roleId == 3">
+            left join admin_user_tag aut on #{adminUserId} = aut.admin_user_id
+            left join topic_tag tt on t.id = tt.topic_id
+        </if>
         <where>
             <if test="startDate != null and endDate != null">
                 c.in_time between #{startDate} and #{endDate}
@@ -41,7 +45,13 @@
             <if test="username != null">
                 and u.username = #{username}
             </if>
+            <if test="roleId==3">
+                aut.tag_id = tt.tag_id
+            </if>
         </where>
+        <if test="roleId==3">
+            group by c.id
+        </if>
         order by c.in_time desc
     </select>
 
