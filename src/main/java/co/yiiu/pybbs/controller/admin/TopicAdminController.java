@@ -94,7 +94,7 @@ public class TopicAdminController extends BaseAdminController {
         topic.setContent(content);
         topic.setModifyTime(new Date());
         topic.setTop(true);
-        User user = userService.selectByUsername("admin");
+        User user = userService.selectByUsername("管理员");
         Topic inform = topicService.insert(title, content, tags, user, 0, 3, session);
         return success();
     }
