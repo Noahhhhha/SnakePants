@@ -2,12 +2,11 @@ package co.yiiu.pybbs.controller.admin;
 
 import co.yiiu.pybbs.model.Tag;
 import co.yiiu.pybbs.model.Topic;
-import co.yiiu.pybbs.service.IIndexedService;
-import co.yiiu.pybbs.service.ITagService;
-import co.yiiu.pybbs.service.ITopicService;
-import co.yiiu.pybbs.service.IUserTopicCostService;
+import co.yiiu.pybbs.model.User;
+import co.yiiu.pybbs.service.*;
 import co.yiiu.pybbs.util.MyPage;
 import co.yiiu.pybbs.util.Result;
+import co.yiiu.pybbs.util.StringUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,9 +14,11 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +36,8 @@ public class TopicAdminController extends BaseAdminController {
     private ITagService tagService;
     @Autowired
     private IIndexedService indexedService;
+    @Autowired
+    private IUserService userService;
 
 
     @RequiresPermissions("topic:list")
@@ -52,6 +55,25 @@ public class TopicAdminController extends BaseAdminController {
         return "admin/topic/list";
     }
 
+    @GetMapping("/inform")
+    public String informList(@RequestParam(defaultValue = "1") Integer pageNo, String startDate, String endDate, String
+            username, Model model) {
+        if (StringUtils.isEmpty(startDate)) startDate = null;
+        if (StringUtils.isEmpty(endDate)) endDate = null;
+        if (StringUtils.isEmpty(username)) username = null;
+        MyPage<Map<String, Object>> page = topicService.selectAllForAdmin(pageNo, startDate, endDate, username,getAdminUser());
+        model.addAttribute("page", page);
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("username", username);
+        return "admin/inform/inform";
+    }
+
+    @GetMapping("/createInform")
+    public String createInform() {
+        return "admin/inform/create";
+    }
+
     @RequiresPermissions("topic:edit")
     @GetMapping("/edit")
     public String edit(Integer id, Model model) {
@@ -63,6 +85,20 @@ public class TopicAdminController extends BaseAdminController {
         model.addAttribute("tags", tags);
         return "admin/topic/edit";
     }
+
+    @PostMapping("informCreate")
+    @ResponseBody
+    public Result informCreate(String title, String content, String tags, HttpSession session) {
+        Topic topic = new Topic();
+        topic.setTitle(title);
+        topic.setContent(content);
+        topic.setModifyTime(new Date());
+        topic.setTop(true);
+        User user = userService.selectByUsername("admin");
+        Topic inform = topicService.insert(title, content, tags, user, 0, 3, session);
+        return success();
+    }
+
 
     @RequiresPermissions("topic:edit")
     @PostMapping("edit")

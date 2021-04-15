@@ -20,9 +20,9 @@
                                       placeholder="内容，支持Markdown语法"></textarea>
                         </div>
                         <div class="form-group">
-                          <label for="tags">标签</label>
+                          <label for="tags">投稿分区</label>
                           <input type="text" name="tags" id="tags" value="${tags!}" class="form-control"
-                                 placeholder="标签, 多个标签以 英文逗号 隔开"/>
+                                 placeholder="分区, 多个分区以 英文逗号 隔开"/>
                         </div>
 <#--                        <input type="hidden" name="tag" id="tag" value="${tag!}"/>-->
 

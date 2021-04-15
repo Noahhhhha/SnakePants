@@ -3,6 +3,7 @@ package co.yiiu.pybbs.directive;
 import co.yiiu.pybbs.model.User;
 import co.yiiu.pybbs.service.ICommentService;
 import co.yiiu.pybbs.service.IUserService;
+import co.yiiu.pybbs.util.SensitiveWordUtil;
 import freemarker.core.Environment;
 import freemarker.template.*;
 import org.springframework.beans.factory.annotation.Autowired;

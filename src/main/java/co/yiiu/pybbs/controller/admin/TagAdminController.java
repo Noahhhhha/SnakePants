@@ -1,8 +1,12 @@
 package co.yiiu.pybbs.controller.admin;
 
+import co.yiiu.pybbs.model.AdminUser;
 import co.yiiu.pybbs.model.Tag;
 import co.yiiu.pybbs.model.User;
 import co.yiiu.pybbs.service.ITagService;
+import co.yiiu.pybbs.service.impl.AdminUserService;
+import co.yiiu.pybbs.service.impl.AdminUserTagService;
+import co.yiiu.pybbs.service.impl.TopicService;
 import co.yiiu.pybbs.util.FileUtil;
 import co.yiiu.pybbs.util.Result;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -30,6 +34,12 @@ public class TagAdminController extends BaseAdminController {
     private ITagService tagService;
     @Autowired
     private FileUtil fileUtil;
+    @Autowired
+    private AdminUserTagService adminUserTagService;
+    @Autowired
+    private AdminUserService adminUserService;
+    @Autowired
+    private TopicService topicService;
 
     @RequiresPermissions("tag:list")
     @GetMapping("/list")

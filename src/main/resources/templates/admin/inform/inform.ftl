@@ -1,26 +1,26 @@
 <#include "../layout/layout.ftl">
-<@html page_title="话题列表" page_tab="topic">
+<@html page_title="话题列表" page_tab="inform">
     <section class="content-header">
         <h1>
-            话题
+            公告
             <small>列表</small>
         </h1>
         <ol class="breadcrumb">
             <li><a href="/admin/index"><i class="fa fa-dashboard"></i> 首页</a></li>
-            <li><a href="/admin/topic/list">话题</a></li>
+            <li><a href="/admin/topic/inform">公告</a></li>
             <li class="active">列表</li>
         </ol>
     </section>
     <section class="content">
         <div class="box box-info">
             <div class="box-header with-border">
-                <h3 class="box-title">话题列表</h3>
+                <h3 class="box-title">公告列表</h3>
                 <span class="pull-right">
           <#if sec.hasPermission("topic:index_all")>
-              <button onclick="index_all_topic()" class="btn btn-primary btn-xs">索引全部话题</button>&nbsp;
+              <button onclick="index_all_topic()" class="btn btn-primary btn-xs">索引全部公告</button>&nbsp;
           </#if>
                     <#if sec.hasPermission("topic:delete_all_index")>
-                        <button onclick="delete_all_index()" class="btn btn-danger btn-xs">删除所有话题索引</button>
+                        <button onclick="delete_all_index()" class="btn btn-danger btn-xs">删除所有公告索引</button>
                     </#if>
         </span>
             </div>
@@ -36,6 +36,12 @@
                         <button type="submit" class="btn btn-primary btn-sm">搜索</button>
                     </div>
                 </form>
+
+
+
+
+                <a href="/admin/topic/createInform">创建公告</a>
+
                 <table class="table table-bordered">
                     <thead>
                     <tr>
@@ -50,68 +56,68 @@
                     </thead>
                     <tbody>
                     <#list page.records as topic>
-                        <#if topic.category != 3>
-                        <tr>
-                            <td>${topic.id}</td>
-                            <td>
-                                <a href="/topic/${topic.id}" target="_blank">${topic.title}</a>
-                                <#if topic.isJubao != 0>
-                                    <p class="text-danger">被举报次数：${topic.isJubao!}</p>
-                                </#if>
-                            </td>
-                            <td>
-                                <a href="/user/${topic.username}" target="_blank">${topic.username}</a>
-                            </td>
-                            <td>${topic.commentCount}</td>
-                            <td>
-                                <#if topic.top>
-                                    置顶
-                                <#elseif topic.good>
-                                    精华
-                                <#else>
-                                    &nbsp;
-                                </#if>
-                            </td>
-                            <td>${topic.inTime!}</td>
-                            <td>
-                                <#if sec.hasPermission("topic:index")>
-                                    <button onclick="index_topic('${topic.id}')" class="btn btn-xs btn-primary">索引
-                                    </button>
-                                </#if>
-                                <#if sec.hasPermission("topic:delete_index")>
-                                    <button onclick="delete_index('${topic.id}')" class="btn btn-xs btn-danger">删除索引
-                                    </button>
-                                </#if>
-                                <#if sec.hasPermission("topic:top")>
-                                    <button onclick="actionBtn('${topic.id}', 'top', this)"
-                                            class="btn btn-xs btn-warning">
-                                        <#if topic.top>
-                                            取消置顶
-                                        <#else>
-                                            置顶
-                                        </#if>
-                                    </button>
-                                </#if>
-                                <#if sec.hasPermission("topic:good")>
-                                    <button onclick="actionBtn('${topic.id}', 'good', this)"
-                                            class="btn btn-xs btn-warning">
-                                        <#if topic.good>
-                                            取消加精
-                                        <#else>
-                                            加精
-                                        </#if>
-                                    </button>
-                                </#if>
-                                <#if sec.hasPermission("topic:edit")>
-                                    <a href="/admin/topic/edit?id=${topic.id}" class="btn btn-xs btn-warning">编辑</a>
-                                </#if>
-                                <#if sec.hasPermission("topic:delete")>
-                                    <button onclick="actionBtn('${topic.id}', 'delete', this)"
-                                            class="btn btn-xs btn-danger">删除
-                                    </button>
-                                </#if>
-                            </td>
-                        </tr>
+                        <#if topic.category == 3>
+                            <tr>
+                                <td>${topic.id}</td>
+                                <td>
+                                    <a href="/topic/${topic.id}" target="_blank">${topic.title}</a>
+                                    <#if topic.isJubao != 0>
+                                        <p class="text-danger">被举报次数：${topic.isJubao!}</p>
+                                    </#if>
+                                </td>
+                                <td>
+                                    <a href="/user/${topic.username}" target="_blank">${topic.username}</a>
+                                </td>
+                                <td>${topic.commentCount}</td>
+                                <td>
+                                    <#if topic.top>
+                                        置顶
+                                    <#elseif topic.good>
+                                        精华
+                                    <#else>
+                                        &nbsp;
+                                    </#if>
+                                </td>
+                                <td>${topic.inTime!}</td>
+                                <td>
+                                    <#if sec.hasPermission("topic:index")>
+                                        <button onclick="index_topic('${topic.id}')" class="btn btn-xs btn-primary">索引
+                                        </button>
+                                    </#if>
+                                    <#if sec.hasPermission("topic:delete_index")>
+                                        <button onclick="delete_index('${topic.id}')" class="btn btn-xs btn-danger">删除索引
+                                        </button>
+                                    </#if>
+                                    <#if sec.hasPermission("topic:top")>
+                                        <button onclick="actionBtn('${topic.id}', 'top', this)"
+                                                class="btn btn-xs btn-warning">
+                                            <#if topic.top>
+                                                取消置顶
+                                            <#else>
+                                                置顶
+                                            </#if>
+                                        </button>
+                                    </#if>
+                                    <#if sec.hasPermission("topic:good")>
+                                        <button onclick="actionBtn('${topic.id}', 'good', this)"
+                                                class="btn btn-xs btn-warning">
+                                            <#if topic.good>
+                                                取消加精
+                                            <#else>
+                                                加精
+                                            </#if>
+                                        </button>
+                                    </#if>
+                                    <#if sec.hasPermission("topic:edit")>
+                                        <a href="/admin/topic/edit?id=${topic.id}" class="btn btn-xs btn-warning">编辑</a>
+                                    </#if>
+                                    <#if sec.hasPermission("topic:delete")>
+                                        <button onclick="actionBtn('${topic.id}', 'delete', this)"
+                                                class="btn btn-xs btn-danger">删除
+                                        </button>
+                                    </#if>
+                                </td>
+                            </tr>
                         </#if>
                     </#list>
                     </tbody>

@@ -22,6 +22,14 @@
                         </a>
                     </li>
                 </#if>
+
+                <li <#if page_tab=='inform'>class="active"</#if>>
+                    <a href="/admin/topic/inform">
+                        <i class="fa fa-list"></i>
+                        <span>公告管理</span>
+                    </a>
+                </li>
+
                 <#if sec.hasPermission('topic:list')>
                     <li <#if page_tab=='topic'>class="active"</#if>>
                         <a href="/admin/topic/list">

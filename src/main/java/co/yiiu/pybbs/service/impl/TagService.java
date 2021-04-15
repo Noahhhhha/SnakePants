@@ -1,6 +1,9 @@
 package co.yiiu.pybbs.service.impl;
 
+import co.yiiu.pybbs.mapper.AdminUserMapper;
+import co.yiiu.pybbs.mapper.AdminUserTagMapper;
 import co.yiiu.pybbs.mapper.TagMapper;
+import co.yiiu.pybbs.mapper.TopicMapper;
 import co.yiiu.pybbs.model.AdminUserTag;
 import co.yiiu.pybbs.model.Tag;
 import co.yiiu.pybbs.model.TopicTag;
@@ -39,6 +42,7 @@ public class TagService implements ITagService {
     private ISystemConfigService systemConfigService;
     @Autowired
     private AdminUserTagService adminUserTagService;
+
 
 
     @Override
@@ -168,7 +172,12 @@ public class TagService implements ITagService {
     // 如果 topic_tag 表里还有关联的数据，这里删除会报错
     @Override
     public void delete(Integer id) {
+        //根据tagid删除tag中的帖子
+
+        //将tag分区的管理员删除
+
         tagMapper.deleteById(id);
+
     }
 
     // ---------------------------- admin ----------------------------

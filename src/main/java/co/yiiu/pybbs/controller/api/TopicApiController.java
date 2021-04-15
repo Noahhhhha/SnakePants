@@ -105,7 +105,7 @@ public class TopicApiController extends BaseApiController {
         ip = ip.replace(":", "_").replace(".", "_");
         topic = topicService.updateViewCount(topic, ip);
         topic.setContent(SensitiveWordUtil.replaceSensitiveWord(topic.getContent(), "*", SensitiveWordUtil.MinMatchType));
-
+        topic.setTitle(SensitiveWordUtil.replaceSensitiveWord(topic.getTitle(), "**", SensitiveWordUtil.MinMatchType));
 
         map.put("costpoints",topic.getCostpoints());
         map.put("costType", costType);
@@ -152,7 +152,8 @@ public class TopicApiController extends BaseApiController {
         // 再次将tag转成逗号隔开的字符串
         tags = StringUtils.collectionToCommaDelimitedString(set);
         Topic topic = topicService.insert(title, content, tags, user, costpoints, category, session);
-        topic.setContent(SensitiveWordUtil.replaceSensitiveWord(topic.getContent(), "*", SensitiveWordUtil.MinMatchType));
+        topic.setContent(SensitiveWordUtil.replaceSensitiveWord(topic.getContent(), "**", SensitiveWordUtil.MinMatchType));
+        topic.setTitle(SensitiveWordUtil.replaceSensitiveWord(topic.getTitle(), "**", SensitiveWordUtil.MinMatchType));
         userTopicCostService.insertUserTopic(getUser().getId(),topic.getId()); // 创建作者与自己话题的积分关系
         return success(topic);
     }

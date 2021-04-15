@@ -6,11 +6,19 @@
 
                     <div class="title">
 <#--                        <a href="/topic/${topic.id}">${topic.title!?html}</a>-->
-                        <a href="javascript:findDetail(${topic.id})">${topic.title!?html}</a>
+                        <a href="javascript:findDetail(${topic.id})">
+                            <#if topic.category == 3>
+                                <span style="font:800 18px Simsun;color:#F00;">${topic.title!?html}</span>
+                            <#else>
+                                ${topic.title!?html}
+                            </#if>
+                        </a>
                         <#if topic.category == 1>
                             <span class="badge badge-success">话题贴</span>
                         <#elseif topic.category == 2>
                             <span class="badge badge-warning">资源贴</span>
+                        <#elseif topic.category == 3>
+                            <span class="badge badge-danger">公告</span>
                         </#if>
                         <#if topic.costpoints != 0>
                             <span>•</span>
